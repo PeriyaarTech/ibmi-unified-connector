@@ -27,7 +27,7 @@
     "connection-pool",
     "cross-platform"
   ],
-  "author": "DXC Technology",
+  "author": "PeriyaarTech",
   "license": "UNLICENSED",
   "peerDependencies": {
     "odbc": "^2.x",

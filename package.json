@@ -1,0 +1,53 @@
+{
+  "name": "ibmi-unified-connector",
+  "version": "1.0.0",
+  "description": "Unified cross-platform database connector supporting IBM i (idb-connector) and ODBC",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "testdb": "node ./scripts/testdb.mjs"
+  },
+  "keywords": [
+    "ibm-i",
+    "odbc",
+    "idb-connector",
+    "database",
+    "connection-pool",
+    "cross-platform"
+  ],
+  "author": "DXC Technology",
+  "license": "UNLICENSED",
+  "peerDependencies": {
+    "odbc": "^2.x",
+    "idb-connector": "^1.2.19"
+  },
+  "peerDependenciesMeta": {
+    "odbc": {
+      "optional": true
+    },
+    "idb-connector": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.5",
+    "@types/xml2js": "^0.4.14",
+    "typescript": "^5.7.2"
+  },
+  "dependencies": {
+    "itoolkit": "^1.0.2",
+    "xml2js": "^0.6.2"
+  }
+}

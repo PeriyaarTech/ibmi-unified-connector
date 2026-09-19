@@ -1,0 +1,72 @@
+{
+  "$schema": "./pools.schema.json",
+  "version": "1.0.0",
+  "description": "Database connection pool configurations for different endpoint types",
+  "_comment": "Use ${VAR_NAME} placeholders for environment variables. On IBM i, use DB_SYSTEM=*LOCAL or leave empty for local connection.",
+  "pools": {
+    "medium": {
+      "name": "Medium Pool",
+      "description": "Medium-priority pool for standard queries and read operations",
+      "maxSize": 12,
+      "timeout": 60000,
+      "incrementSize": 1,
+      "jobPriority": 20,
+      "validateOnBorrow": true,
+      "idleValidationMillis": 120000,
+      "maxIdleMillis": 900000,
+      "connectionCreateRetries": 1,
+      "connectionCreateRetryDelayMillis": 250,
+      "healthCheckSql": "SELECT 1 FROM SYSIBM.SYSDUMMY1",
+      "sqlConcurrency": 10,
+      "libraryList": ["QTEMP", "QGPL"],
+      "connectionString": "DRIVER={IBM i Access ODBC Driver};SYSTEM=${DB_SYSTEM};UID=${DB_USER};PWD=${DB_PASSWORD};DBQ=QTEMP,QGPL",
+      "routePatterns": [
+        "/v1/query/*",
+        "/api/v1/query/*"
+      ]
+    },
+    "low": {
+      "name": "Low Pool",
+      "description": "Low-priority pool for batch operations and background processing",
+      "maxSize": 12,
+      "timeout": 60000,
+      "incrementSize": 1,
+      "jobPriority": 50,
+      "validateOnBorrow": true,
+      "idleValidationMillis": 120000,
+      "maxIdleMillis": 900000,
+      "connectionCreateRetries": 1,
+      "connectionCreateRetryDelayMillis": 250,
+      "healthCheckSql": "SELECT 1 FROM SYSIBM.SYSDUMMY1",
+      "sqlConcurrency": 10,
+      "libraryList": ["QTEMP", "QGPL"],
+      "connectionString": "DRIVER={IBM i Access ODBC Driver};SYSTEM=${DB_SYSTEM};UID=${DB_USER};PWD=${DB_PASSWORD};DBQ=QTEMP, QGPL",
+      "routePatterns": [
+        "/batch/*",
+        "/api/batch/*"
+      ]
+    },
+    "high": {
+      "name": "High Pool",
+      "description": "High-priority pool for interactive user requests with fast response requirements",
+      "maxSize": 20,
+      "timeout": 30000,
+      "incrementSize": 2,
+      "jobPriority": 10,
+      "validateOnBorrow": true,
+      "idleValidationMillis": 60000,
+      "maxIdleMillis": 300000,
+      "connectionCreateRetries": 1,
+      "connectionCreateRetryDelayMillis": 250,
+      "healthCheckSql": "SELECT 1 FROM SYSIBM.SYSDUMMY1",
+      "sqlConcurrency": 10,
+      "libraryList": ["QTEMP", "QGPL"],
+      "connectionString": "DRIVER={IBM i Access ODBC Driver};SYSTEM=${DB_SYSTEM};UID=${DB_USER};PWD=${DB_PASSWORD};DBQ=QTEMP,QGPL",
+      "routePatterns": [
+        "/api/*",
+        "/health"
+      ]
+    }
+  },
+  "defaultPool": "high"
+}

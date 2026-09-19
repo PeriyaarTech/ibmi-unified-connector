@@ -1,0 +1,129 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Database Pool Configuration",
+  "description": "Schema for database connection pool configurations",
+  "type": "object",
+  "required": ["version", "pools", "defaultPool"],
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "Configuration version",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "description": {
+      "type": "string",
+      "description": "Optional description of the pool configuration"
+    },
+    "pools": {
+      "type": "object",
+      "description": "Named pool configurations",
+      "additionalProperties": {
+        "$ref": "#/definitions/poolConfig"
+      }
+    },
+    "defaultPool": {
+      "type": "string",
+      "description": "Default pool name to use when route doesn't match any pattern"
+    }
+  },
+  "definitions": {
+    "poolConfig": {
+      "type": "object",
+      "required": ["name", "maxSize", "timeout"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Friendly name for the pool"
+        },
+        "description": {
+          "type": "string",
+          "description": "Optional description of the pool's purpose"
+        },
+        "maxSize": {
+          "type": "integer",
+          "description": "Maximum number of connections in the pool",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "timeout": {
+          "type": "integer",
+          "description": "Connection timeout in milliseconds",
+          "minimum": 1000
+        },
+        "incrementSize": {
+          "type": "integer",
+          "description": "Number of connections to add when pool is exhausted",
+          "minimum": 1,
+          "default": 1
+        },
+        "jobPriority": {
+          "type": "integer",
+          "description": "IBM i job run priority (1-99, lower=higher priority). Set per-connection on IBM i.",
+          "minimum": 1,
+          "maximum": 99
+        },
+        "connectionString": {
+          "type": "string",
+          "description": "Optional ODBC connection string. If not provided, uses ODBC_CONNECTION_STRING from environment."
+        },
+        "libraryList": {
+          "type": "array",
+          "description": "IBM i library list applied via CHGLIBL on idb-connector connections (ODBC uses DBQ in connection string).",
+          "items": { "type": "string" }
+        },
+        "currentLibrary": {
+          "type": "string",
+          "description": "IBM i current library applied via CHGCURLIB on idb-connector connections."
+        },
+        "validateOnBorrow": {
+          "type": "boolean",
+          "description": "When true, validate a pooled connection before reuse after it has been idle longer than idleValidationMillis.",
+          "default": false
+        },
+        "idleValidationMillis": {
+          "type": "integer",
+          "description": "Minimum idle age in milliseconds before a borrowed connection is health-checked.",
+          "minimum": 0,
+          "default": 0
+        },
+        "maxIdleMillis": {
+          "type": "integer",
+          "description": "Maximum idle age in milliseconds before a pooled connection is closed instead of reused. Zero disables idle eviction.",
+          "minimum": 0,
+          "default": 0
+        },
+        "connectionCreateRetries": {
+          "type": "integer",
+          "description": "Number of retry attempts when creating a connection fails with a transient communication error.",
+          "minimum": 0,
+          "default": 0
+        },
+        "connectionCreateRetryDelayMillis": {
+          "type": "integer",
+          "description": "Delay in milliseconds between transient connection creation retry attempts.",
+          "minimum": 0,
+          "default": 0
+        },
+        "healthCheckSql": {
+          "type": "string",
+          "description": "SQL statement used to validate a stale borrowed connection.",
+          "default": "SELECT 1 FROM SYSIBM.SYSDUMMY1"
+        },
+        "sqlConcurrency": {
+          "type": "integer",
+          "description": "Maximum number of SQL statements to execute concurrently for one request.",
+          "minimum": 1,
+          "maximum": 100,
+          "default": 1
+        },
+        "routePatterns": {
+          "type": "array",
+          "description": "Route patterns that should use this pool (glob patterns supported)",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "$schema": "./programs.schema.json",
+  "version": "1.0.0",
+  "description": "Program registry for the IBM i test CLP program used by npm run testdb",
+  "_comment": "Use ${VAR_NAME} placeholders for environment variables. Library resolved from connection at runtime.",
+  "programs": {
+    "TESTDB": {
+      "description": "Multiply two decimal values and return the result. Expected: 2 * 4 = 8.",
+      "library": "${PGM_LIBRARY}",
+      "params": [
+        { "name": "A", "type": "10p0" },
+        { "name": "B", "type": "10p0" },
+        { "name": "RESULT", "type": "10p0" }
+      ]
+    }
+  }
+}

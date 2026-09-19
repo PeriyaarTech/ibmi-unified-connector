@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+
+# Build output
+/dist/
+
+# Local environment
+.env
+.env.*
+!.env.example
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+.vscode/
+
+# Example config files are intentionally kept for reference, not for runtime build
+# Uncomment if you want them ignored in Git status too:
+# examples/
+
+# Optional local artifacts
+coverage/
+*.tsbuildinfo

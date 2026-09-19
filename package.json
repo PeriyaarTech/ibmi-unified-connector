@@ -21,14 +21,26 @@
   },
   "keywords": [
     "ibm-i",
+    "as400",
+    "db2",
     "odbc",
     "idb-connector",
     "database",
     "connection-pool",
-    "cross-platform"
+    "cross-platform",
+    "xmlservice",
+    "nodejs"
   ],
   "author": "PeriyaarTech",
-  "license": "UNLICENSED",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PeriyaarTech/ibmi-unified-connector.git"
+  },
+  "homepage": "https://github.com/PeriyaarTech/ibmi-unified-connector",
+  "bugs": {
+    "url": "https://github.com/PeriyaarTech/ibmi-unified-connector/issues"
+  },
   "peerDependencies": {
     "odbc": "^2.x",
     "idb-connector": "^1.2.19"

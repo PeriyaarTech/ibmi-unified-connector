@@ -189,46 +189,7 @@ This is useful for confirming that the runtime environment and pool configuratio
 3. Run `npm run testdb` to confirm the environment is correctly configured.
 4. Use `PoolManager.getPool('high' | 'medium' | 'low')` in your application code based on traffic type.
 
-## Publish to npm as a public package
-
-This project is ready to be published publicly as an npm package.
-
-### 1. Prepare the repo
-
-- make sure the project is in a public GitHub repository
-- make sure the package metadata in [package.json](package.json) is correct
-- confirm the license is open and compatible with your intended usage
-
-### 2. Build the package
-
-```bash
-npm install
-npm run build
-npm pack --dry-run
-```
-
-This validates the package contents before publishing.
-
-### 3. Publish to npm
-
-```bash
-npm login
-npm publish --access public
-```
-
-For a scoped package, use a name such as:
-
-```bash
-@periyaartech/ibmi-unified-connector
-```
-
-For a public unscoped package, the current name is already suitable:
-
-```bash
-ibmi-unified-connector
-```
-
-### 4. Forking and reuse
+## Forking and reuse
 
 The project is open for forking and use under the MIT license. Anyone can:
 
@@ -236,14 +197,6 @@ The project is open for forking and use under the MIT license. Anyone can:
 - install the package from npm
 - use the library in their Node.js application
 - extend or contribute changes back to the upstream project
-
-### 5. Recommended release flow
-
-1. commit and push your public-ready changes
-2. verify the repo is public on GitHub
-3. run the build and package checks
-4. publish to npm
-5. tag the release in GitHub
 
 ## License
 

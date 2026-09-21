@@ -53,12 +53,12 @@ cp examples/.env.example .env
 Then update the values with your IBM i host and credentials:
 
 ```env
-DB_SYSTEM=your-system.lmig.com
+DB_SYSTEM=your-system.periyaartech.com
 DB_USER=your-username
 DB_PASSWORD=your-password
 DB_MODE=auto
 PGM_LIBRARY=YOURLIBRARY
-ODBC_CONNECTION_STRING=DRIVER={IBM i Access ODBC Driver};SYSTEM=your-system.lmig.com;UID=your-username;PWD=your-password;DBQ=QTEMP,QGPL
+ODBC_CONNECTION_STRING=DRIVER={IBM i Access ODBC Driver};SYSTEM=your-system.periyaartech.com;UID=your-username;PWD=your-password;DBQ=QTEMP,QGPL
 ```
 
 ## Pool model

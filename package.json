@@ -1,6 +1,6 @@
 {
   "name": "ibmi-unified-connector",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Unified cross-platform database connector supporting IBM i (idb-connector) and ODBC",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -14,6 +14,7 @@
   "files": [
     "dist",
     "scripts/testdb.mjs",
+    "examples/clp",
     "examples/config",
     "examples/.env.example"
   ],

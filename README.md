@@ -143,7 +143,7 @@ const rows = await routed.query('SELECT * FROM SOME_TABLE');
 
 ## Database validation script
 
-The package includes an `ibmi-testdb` utility that validates the actual database setup and pool routing logic. After installing the package in an application, create a `.env` file in that application's working directory and run:
+The package includes an `ibmi-testdb` utility that validates the actual database setup and pool routing logic. After installing the package in an application, create a `.env` file in that application's working directory and Ensure that 'example/clp/TESTDB.CLLE' is moved to QGPL and compiled before running :
 
 ```bash
 npx ibmi-testdb
@@ -165,7 +165,7 @@ What it checks:
 - executes sample SQL queries
 - verifies route-to-pool matching
 
-The published package includes `dist`, `scripts/testdb.mjs`, `examples/config`, and `examples/.env.example`. Ensure that  `.env` file is created and containing credentials.
+The published package includes `dist`, `scripts/testdb.mjs`, `examples/config`, and `examples/.env.example`. 
 
 This is useful for confirming that the runtime environment and pool configuration are aligned before integrating into an application.
 

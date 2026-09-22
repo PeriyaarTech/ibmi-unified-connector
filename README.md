@@ -28,6 +28,12 @@ This package is designed for applications that need a single integration point a
 ## Install
 
 ```bash
+npm install ibmi-unified-connector
+```
+
+For local development from this repository:
+
+```bash
 npm install
 npm run build
 ```
@@ -137,7 +143,13 @@ const rows = await routed.query('SELECT * FROM SOME_TABLE');
 
 ## Database validation script
 
-This project includes a utility that validates the actual database setup and pool routing logic:
+The package includes an `ibmi-testdb` utility that validates the actual database setup and pool routing logic. After installing the package in an application, create a `.env` file in that application's working directory and run:
+
+```bash
+npx ibmi-testdb
+```
+
+The utility uses the packaged pool and program configuration files. It does not include or publish credentials. For repository development, run the same check with:
 
 ```bash
 npm run testdb
@@ -152,6 +164,8 @@ What it checks:
 - runs a connection test
 - executes sample SQL queries
 - verifies route-to-pool matching
+
+The published package includes `dist`, `scripts/testdb.mjs`, `examples/config`, and `examples/.env.example`. Ensure that  `.env` file is created and containing credentials.
 
 This is useful for confirming that the runtime environment and pool configuration are aligned before integrating into an application.
 

@@ -1,6 +1,6 @@
 {
   "name": "ibmi-unified-connector",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Unified cross-platform database connector supporting IBM i (idb-connector) and ODBC",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -12,8 +12,14 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "scripts/testdb.mjs",
+    "examples/config",
+    "examples/.env.example"
   ],
+  "bin": {
+    "ibmi-testdb": "scripts/testdb.mjs"
+  },
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
@@ -59,6 +65,7 @@
     "typescript": "^5.7.2"
   },
   "dependencies": {
+    "ibmi-unified-connector": "^1.0.5",
     "xml2js": "^0.6.2"
   }
 }

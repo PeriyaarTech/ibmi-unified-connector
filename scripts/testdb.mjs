@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -8,6 +10,8 @@ const __dirname = path.dirname(__filename);
 const rootDir = path.resolve(__dirname, '..');
 
 const candidateEnvPaths = [
+  path.join(process.cwd(), '.env'),
+  path.join(process.cwd(), 'examples', '.env'),
   path.join(rootDir, '.env'),
   path.join(rootDir, 'examples', '.env')
 ];

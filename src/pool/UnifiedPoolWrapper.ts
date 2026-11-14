@@ -18,6 +18,8 @@ export class UnifiedPoolWrapper {
   private config: PoolConfig;
 
   private currentSize = 0;
+  // Slots reserved by in-flight async connects; keeps concurrent callers within maxSize.
+  private pendingCreates = 0;
   private closed = false;
 
   constructor(config: PoolConfig) {
@@ -54,34 +56,52 @@ export class UnifiedPoolWrapper {
     const available = await this.borrowAvailableConnection();
     if (available) return available;
 
-    if (this.currentSize < this.config.maxSize) {
-      const count = Math.min(this.config.incrementSize || 1, this.config.maxSize - this.currentSize);
-      for (let i = 0; i < count; i++) {
-        const newConn = await this.createConnectionWithRetries();
-        if (newConn && !this.initializedConnections.has(newConn)) {
+    const free = this.config.maxSize - this.currentSize - this.pendingCreates;
+    if (free > 0) {
+      const count = Math.min(this.config.incrementSize || 1, free);
+      let reserved = count;
+      this.pendingCreates += count;
+      let mine: any;
+      try {
+        for (let i = 0; i < count; i++) {
+          let newConn: any;
+          try {
+            newConn = await this.createConnectionWithRetries();
+          } catch (error) {
+            if (!mine) throw error;
+            break;
+          } finally {
+            reserved--;
+            this.pendingCreates--;
+          }
           await this.initializeConnection(newConn);
           this.initializedConnections.add(newConn);
+          // Keep the first for this caller; extras go to queued waiters or the idle list.
+          if (!mine) mine = newConn;
+          else this.releaseConnection(newConn);
         }
+      } finally {
+        this.pendingCreates -= reserved;
       }
-      const newAvailable = await this.borrowAvailableConnection();
-      if (newAvailable) return newAvailable;
+      if (mine) return mine;
     }
 
     return new Promise<any>((resolve, reject) => {
-      const timeoutId = setTimeout(() => {
-        const index = this.pendingRequests.indexOf(resolve);
-        if (index > -1) this.pendingRequests.splice(index, 1);
-        reject(new Error(`Connection pool timeout after ${this.config.timeout}ms`));
-      }, this.config.timeout);
-
-      this.pendingRequests.push(async (conn: any) => {
+      const waiter = async (conn: any) => {
         clearTimeout(timeoutId);
         if (!this.initializedConnections.has(conn)) {
           await this.initializeConnection(conn);
           this.initializedConnections.add(conn);
         }
         resolve(conn);
-      });
+      };
+      const timeoutId = setTimeout(() => {
+        const index = this.pendingRequests.indexOf(waiter);
+        if (index > -1) this.pendingRequests.splice(index, 1);
+        reject(new Error(`Connection pool timeout after ${this.config.timeout}ms`));
+      }, this.config.timeout);
+
+      this.pendingRequests.push(waiter);
     });
   }
 
@@ -210,7 +230,6 @@ export class UnifiedPoolWrapper {
         connection = await this.driverModule.connect(connectionString);
       }
       this.connections.push(connection);
-      this.availableConnections.push(connection);
       this.markConnectionUsed(connection);
       this.currentSize++;
       return connection;
